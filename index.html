@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clock</title>
+    <title>UTC+3 Clock</title>
     <style>
         * {
             box-sizing: border-box;
@@ -18,29 +18,31 @@
             justify-content: center;
             align-items: center;
             background-color: #111111;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
         }
 
-        svg {
-            width: 100%;
-            height: 100%;
-            max-height: 100vh;
-            max-width: 100vw;
+        #clock {
+            font-size: 25vw; /* Scaled relative to viewport width */
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+            text-align: center;
+            font-variant-numeric: tabular-nums; /* Prevents numbers from shifting widths */
         }
 
-        text {
-            fill: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
+        /* Adjust scaling if the screen is very tall/narrow */
+        @media (max-aspect-ratio: 3/1) {
+            #clock {
+                font-size: 18vh; 
+            }
         }
     </style>
 </head>
 <body>
 
-    <svg viewBox="0 0 800 250" preserveAspectRatio="xMidYMid meet">
-        <text id="clock" x="50%" y="65%" text-anchor="middle" dominant-baseline="middle">00:00:00</text>
-    </svg>
+    <div id="clock">00:00:00</div>
 
     <script>
         function updateClock() {
@@ -51,12 +53,12 @@
             
             // Calculate UTC+3 time by adding 3 hours in milliseconds to the UTC time
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const actualTime = new Date(utcTime + (3 * 3600000));
+            const utcPlusThree = new Date(utcTime + (3 * 3600000));
             
             // Format hours, minutes, and seconds with leading zeros
-            const hours = String(actualTime.getHours()).padStart(2, '0');
-            const minutes = String(actualTime.getMinutes()).padStart(2, '0');
-            const seconds = String(actualTime.getSeconds()).padStart(2, '0');
+            const hours = String(utcPlusThree.getHours()).padStart(2, '0');
+            const minutes = String(utcPlusThree.getMinutes()).padStart(2, '0');
+            const seconds = String(utcPlusThree.getSeconds()).padStart(2, '0');
             
             // Update the DOM
             clockElement.textContent = `${hours}:${minutes}:${seconds}`;
