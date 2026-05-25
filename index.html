@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTC+3 Clock</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111111;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #clock {
+            font-size: 25vw; /* Scaled relative to viewport width */
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+            text-align: center;
+            font-variant-numeric: tabular-nums; /* Prevents numbers from shifting widths */
+        }
+
+        /* Adjust scaling if the screen is very tall/narrow */
+        @media (max-aspect-ratio: 3/1) {
+            #clock {
+                font-size: 18vh; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock">00:00:00</div>
+
+    <script>
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            
+            // Get current UTC time
+            const now = new Date();
+            
+            // Calculate UTC+3 time by adding 3 hours in milliseconds to the UTC time
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const utcPlusThree = new Date(utcTime + (3 * 3600000));
+            
+            // Format hours, minutes, and seconds with leading zeros
+            const hours = String(utcPlusThree.getHours()).padStart(2, '0');
+            const minutes = String(utcPlusThree.getMinutes()).padStart(2, '0');
+            const seconds = String(utcPlusThree.getSeconds()).padStart(2, '0');
+            
+            // Update the DOM
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Run immediately on load, then update every second
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
