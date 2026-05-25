@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTC+3 Clock</title>
+    <title>Clock</title>
     <style>
         * {
             box-sizing: border-box;
@@ -53,12 +53,12 @@
             
             // Calculate UTC+3 time by adding 3 hours in milliseconds to the UTC time
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const utcPlusThree = new Date(utcTime + (3 * 3600000));
+            const actualTime = new Date(utcTime + (3 * 3600000)); // 2 in winter, 3 in summer
             
             // Format hours, minutes, and seconds with leading zeros
-            const hours = String(utcPlusThree.getHours()).padStart(2, '0');
-            const minutes = String(utcPlusThree.getMinutes()).padStart(2, '0');
-            const seconds = String(utcPlusThree.getSeconds()).padStart(2, '0');
+            const hours = String(actualTime.getHours()).padStart(2, '0');
+            const minutes = String(actualTime.getMinutes()).padStart(2, '0');
+            const seconds = String(actualTime.getSeconds()).padStart(2, '0');
             
             // Update the DOM
             clockElement.textContent = `${hours}:${minutes}:${seconds}`;
